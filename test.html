@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaflet Map with jQuery</title>
+  <!-- Load jQuery library from CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Load Leaflet CSS from CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <!-- Load Leaflet JavaScript from CDN -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+  <div>
+
+    <input name="lat" type="text" id="latitude" />
+    <input name="long" type="text" id="longitude" />
+  </div>
+  
+  <div id="map" style="height: 400px;"></div>
+
+  <script>
+    $(document).ready(function () {
+      // Default latitude and longitude
+      var defaultLat = 16.837650;
+      var defaultLng = 96.160221;
+
+      var map = L.map("map").setView([defaultLat, defaultLng], 13);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+      }).addTo(map);
+
+      var marker = L.marker([defaultLat, defaultLng]).addTo(map);
+
+      // Function to update the latitude and longitude inputs
+      function updateLatLngInputs(latlng) {
+        $("#latitude").val(latlng.lat);
+        $("#longitude").val(latlng.lng);
+      }
+
+      // Event listener for when the user clicks on the map
+      map.on("click", function (e) {
+        var selectedLatLng = e.latlng;
+        marker.setLatLng(selectedLatLng);
+        updateLatLngInputs(selectedLatLng);
+      });
+
+      // Initialize inputs with default values
+      updateLatLngInputs(marker.getLatLng());
+    });
+  </script>
+</body>
+</html>
